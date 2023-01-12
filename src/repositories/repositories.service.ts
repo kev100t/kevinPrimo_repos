@@ -2,14 +2,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { StateEnum } from './enums/state.enum';
 import { VerificationEnum } from './enums/verification.enum';
 import { RepositoryEntity } from './entities/repository.entity';
-import { MetricsRepository } from './repositories.repository';
+import { RepositoriesRepository } from './repositories.repository';
 
 @Injectable()
-export class MetricsService {
-	constructor(private readonly metricsRepository: MetricsRepository) {}
+export class RepositoriesService {
+	constructor(
+		private readonly repositoriesRepository: RepositoriesRepository,
+	) {}
 
 	async list(tribeId: string): Promise<{ repositories: RepositoryEntity[] }> {
-		const tribeData = await this.metricsRepository.getTribe(tribeId);
+		const tribeData = await this.repositoriesRepository.getTribe(tribeId);
 
 		if (!tribeData) {
 			throw new HttpException(
@@ -20,10 +22,10 @@ export class MetricsService {
 			);
 		}
 
-		const repositories = await this.metricsRepository.list(tribeId);
+		const repositories = await this.repositoriesRepository.list(tribeId);
 
 		const repositoryVerficiationData =
-			await this.metricsRepository.listRepositoryVerifications();
+			await this.repositoriesRepository.listRepositoryVerifications();
 
 		if (repositories.length === 0) {
 			throw new HttpException(
@@ -53,27 +55,66 @@ export class MetricsService {
 			repository.vulnerabilities = metric.vulnerabilities;
 			repository.hotspot = metric.hotspot;
 			repository.state = StateEnum[repository.state];
-			repository.status = '';
+			repository.verificationState = '';
 
 			switch (repositoryVerificationCode.state) {
 				case 604:
-					repository.status = VerificationEnum.VERIFIED;
+					repository.verificationState = VerificationEnum.VERIFIED;
 					break;
 				case 605:
-					repository.status = VerificationEnum.ON_HOLD;
+					repository.verificationState = VerificationEnum.ON_HOLD;
 					break;
 				case 606:
-					repository.status = VerificationEnum.APPROVED;
+					repository.verificationState = VerificationEnum.APPROVED;
 					break;
 			}
 
 			delete repository.tribeId;
 			delete repository.createTime;
 			delete repository.metrics;
+			delete repository.status;
 		}
 
 		return {
 			repositories: repositories,
 		};
+	}
+
+	async getReportFile(tribeId: string): Promise<any> {
+		const { repositories } = await this.list(tribeId);
+
+		let csvData =
+			[
+				'ID',
+				'Name',
+				'Tribe',
+				'Organization',
+				'Coverage',
+				'Code Smells',
+				'Bugs',
+				'Vulnerabilities',
+				'Hotspot',
+				'Verification State',
+				'State',
+			].join(',') + '\r\n';
+
+		repositories.forEach((repository) => {
+			csvData +=
+				[
+					repository.id,
+					repository.name,
+					repository.tribe,
+					repository.organization,
+					repository.coverage,
+					repository.codeSmells,
+					repository.bugs,
+					repository.vulnerabilities,
+					repository.hotspot,
+					repository.verificationState,
+					repository.state,
+				].join(',') + '\r\n';
+		});
+
+		return csvData;
 	}
 }

@@ -2,20 +2,20 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { RepositoryVerificationsRepository } from 'src/repository-verifications/repository-verifications.repository';
 import { RepositoryVerificationsService } from 'src/repository-verifications/repository-verifications.service';
-import { MetricsController } from './repositories.controller';
-import { MetricsRepository } from './repositories.repository';
-import { MetricsService } from './repositories.service';
+import { RepositoriesController } from './repositories.controller';
+import { RepositoriesRepository } from './repositories.repository';
+import { RepositoriesService } from './repositories.service';
 
 @Module({
 	imports: [],
-	controllers: [MetricsController],
+	controllers: [RepositoriesController],
 	providers: [
-		MetricsService,
-		MetricsRepository,
+		RepositoriesService,
+		RepositoriesRepository,
 		RepositoryVerificationsService,
 		RepositoryVerificationsRepository,
 		PrismaService,
 	],
-	exports: [MetricsService, MetricsRepository],
+	exports: [RepositoriesService, RepositoriesRepository],
 })
-export class MetricsModule {}
+export class RepositoriesModule {}

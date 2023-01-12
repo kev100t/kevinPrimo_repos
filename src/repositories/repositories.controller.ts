@@ -5,14 +5,16 @@ import {
 	UseFilters,
 	Get,
 	Param,
+	Res,
 } from '@nestjs/common';
-import { MetricsService } from './repositories.service';
+import { RepositoriesService } from './repositories.service';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { RepositoryEntity } from './entities/repository.entity';
+import type { Response } from 'express';
 
-@Controller('metrics')
-export class MetricsController {
-	constructor(private readonly metricsService: MetricsService) {}
+@Controller('repositories')
+export class RepositoriesController {
+	constructor(private readonly repositoriesService: RepositoriesService) {}
 
 	@Get(':tribeId')
 	@UseFilters(new HttpExceptionFilter())
@@ -20,11 +22,40 @@ export class MetricsController {
 		try {
 			const { tribeId } = params;
 
-			return await this.metricsService.list(tribeId);
-		} catch (err) {
+			return await this.repositoriesService.list(tribeId);
+		} catch {
 			throw new HttpException(
 				{
-					message: err.message,
+					message: 'Ocurrió un error.',
+				},
+				HttpStatus.INTERNAL_SERVER_ERROR,
+			);
+		}
+	}
+
+	@Get(':tribeId/report-file')
+	@UseFilters(new HttpExceptionFilter())
+	async getReportFile(
+		@Param() params,
+		@Res({ passthrough: true }) res: Response,
+	): Promise<any> {
+		try {
+			const { tribeId } = params;
+
+			const fileName = 'report.csv';
+
+			const data = await this.repositoriesService.getReportFile(tribeId);
+
+			res
+				.set({
+					'Content-Type': 'text/csv',
+					'Content-Disposition': `attachment; filename=${fileName}`,
+				})
+				.send(data);
+		} catch {
+			throw new HttpException(
+				{
+					message: 'Ocurrió un error.',
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);

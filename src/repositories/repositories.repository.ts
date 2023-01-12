@@ -5,7 +5,7 @@ import { RepositoryVerificationsService } from 'src/repository-verifications/rep
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
-export class MetricsRepository {
+export class RepositoriesRepository {
 	constructor(
 		private prisma: PrismaService,
 		private repositoryVerficiations: RepositoryVerificationsService,

@@ -26,10 +26,10 @@ export class OrganizationsController {
 	): Promise<OrganizationEntity> {
 		try {
 			return await this.organizationsService.create(organizationDto);
-		} catch (err) {
+		} catch {
 			throw new HttpException(
 				{
-					message: err.message,
+					message: 'Ocurrió un error.',
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -46,10 +46,10 @@ export class OrganizationsController {
 			const { id } = params;
 
 			return await this.organizationsService.update(id, organizationDto);
-		} catch (err) {
+		} catch {
 			throw new HttpException(
 				{
-					message: err.message,
+					message: 'Ocurrió un error.',
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -61,10 +61,10 @@ export class OrganizationsController {
 	async list(): Promise<OrganizationEntity[]> {
 		try {
 			return await this.organizationsService.list();
-		} catch (err) {
+		} catch {
 			throw new HttpException(
 				{
-					message: err.message,
+					message: 'Ocurrió un error.',
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -78,10 +78,10 @@ export class OrganizationsController {
 			const { id } = params;
 
 			return await this.organizationsService.delete(id);
-		} catch (err) {
+		} catch {
 			throw new HttpException(
 				{
-					message: err.message,
+					message: 'Ocurrió un error.',
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
@@ -93,10 +93,10 @@ export class OrganizationsController {
 	async test(): Promise<any> {
 		try {
 			return await this.organizationsService.test();
-		} catch (err) {
+		} catch {
 			throw new HttpException(
 				{
-					message: err.message,
+					message: 'Ocurrió un error.',
 				},
 				HttpStatus.INTERNAL_SERVER_ERROR,
 			);
