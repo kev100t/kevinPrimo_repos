@@ -49,7 +49,7 @@ export class RepositoriesService {
 			repository.name = repository.name.trim();
 			repository.organization = repository.tribe.organization.name.trim();
 			repository.tribe = repository.tribe.name.trim();
-			repository.coverage = metric.coverage;
+			repository.coverage = `${metric.coverage}%`;
 			repository.codeSmells = metric.codeSmells;
 			repository.bugs = metric.bugs;
 			repository.vulnerabilities = metric.vulnerabilities;
