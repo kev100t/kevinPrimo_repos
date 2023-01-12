@@ -8,15 +8,15 @@ datasource db {
 }
 
 model Organization {
-  id     Int     @id @default(autoincrement())
+  id     String  @id
   name   String  @db.Char(50)
   status Int
   tribes Tribe[]
 }
 
 model Tribe {
-  id             Int          @id @default(autoincrement())
-  organizationId Int
+  id             String       @id
+  organizationId String
   name           String       @db.Char(50)
   status         Int
   organization   Organization @relation(fields: [organizationId], references: [id])
@@ -24,8 +24,8 @@ model Tribe {
 }
 
 model Repository {
-  id         Int      @id @default(autoincrement())
-  tribeId    Int
+  id         String   @id
+  tribeId    String
   name       String   @db.Char(50)
   state      String   @db.Char(1)
   createTime DateTime
@@ -35,7 +35,7 @@ model Repository {
 }
 
 model Metric {
-  repositoryId    Int        @id
+  repositoryId    String     @id
   coverage        Float
   bugs            Int
   vulnerabilities Int

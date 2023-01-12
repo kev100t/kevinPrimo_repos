@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { RepositoryVerificationsService } from './repository-verifications.service';
 import { HttpExceptionFilter } from '../http-exception.filter';
+import { RepositoryVerification } from './entities/repository-verifications.entity';
 
 @Controller('repository-verifications')
 export class RepositoryVerificationsController {
@@ -16,10 +17,10 @@ export class RepositoryVerificationsController {
 
 	@Get()
 	@UseFilters(new HttpExceptionFilter())
-	async list(): Promise<any> {
+	async list(): Promise<{ repositories: RepositoryVerification[] }> {
 		try {
 			return await this.repositoryVerificationsService.list();
-		} catch (err) {
+		} catch (error) {
 			throw new HttpException(
 				{
 					message: 'Ocurrió un error.',

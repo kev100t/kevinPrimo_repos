@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RepositoryVerification } from './entities/repository-verifications.entity';
 import { RepositoryVerificationsRepository } from './repository-verifications.repository';
 
 @Injectable()
@@ -7,7 +8,7 @@ export class RepositoryVerificationsService {
 		private readonly repositoryVerificationsRepository: RepositoryVerificationsRepository,
 	) {}
 
-	async list(): Promise<any> {
+	async list(): Promise<{ repositories: RepositoryVerification[] }> {
 		const repositoryVerifications =
 			await this.repositoryVerificationsRepository.list();
 
