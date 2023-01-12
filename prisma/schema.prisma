@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id     Int     @id @default(autoincrement())
+  name   String  @db.Char(50)
+  status Int
+  tribes Tribe[]
+}
+
+model Tribe {
+  id             Int          @id @default(autoincrement())
+  organizationId Int
+  name           String       @db.Char(50)
+  status         Int
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  repositories   Repository[]
+}
+
+model Repository {
+  id         Int      @id @default(autoincrement())
+  tribeId    Int
+  name       String   @db.Char(50)
+  state      String   @db.Char(1)
+  createTime DateTime
+  status     String   @db.Char(1)
+  tribe      Tribe    @relation(fields: [tribeId], references: [id])
+  metrics    Metric[]
+}
+
+model Metric {
+  repositoryId    Int        @id
+  coverage        Float
+  bugs            Int
+  vulnerabilities Int
+  hotspot         Int
+  codeSmells      Int
+  repository      Repository @relation(fields: [repositoryId], references: [id])
+}
