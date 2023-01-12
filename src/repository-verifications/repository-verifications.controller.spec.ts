@@ -3,7 +3,7 @@ import { RepositoryVerificationsController } from './repository-verifications.co
 import { RepositoryVerificationsRepository } from './repository-verifications.repository';
 import { RepositoryVerificationsService } from './repository-verifications.service';
 
-describe('AppController', () => {
+describe('RepositoryVerificationsController', () => {
 	let repositoryVerificationsController: RepositoryVerificationsController;
 
 	beforeEach(async () => {
