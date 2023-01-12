@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { RepositoryVerification } from './entities/repository-verifications.entity';
+import { RepositoryVerificationEntity } from './entities/repository-verification.entity';
 
 @Injectable()
 export class RepositoryVerificationsRepository {
-	async list(): Promise<RepositoryVerification[]> {
+	async list(): Promise<RepositoryVerificationEntity[]> {
 		return [
 			{
 				id: '1',

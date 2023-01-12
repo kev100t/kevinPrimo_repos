@@ -13,6 +13,7 @@ import {
 import { OrganizationsService } from './organizations.service';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { OrganizationDto } from './dto/organization-dto';
+import { OrganizationEntity } from './entities/organization.entity';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -20,7 +21,9 @@ export class OrganizationsController {
 
 	@Post()
 	@UseFilters(new HttpExceptionFilter())
-	async create(@Body() organizationDto: OrganizationDto): Promise<any> {
+	async create(
+		@Body() organizationDto: OrganizationDto,
+	): Promise<OrganizationEntity> {
 		try {
 			return await this.organizationsService.create(organizationDto);
 		} catch (err) {
@@ -38,7 +41,7 @@ export class OrganizationsController {
 	async update(
 		@Body() organizationDto: OrganizationDto,
 		@Param() params,
-	): Promise<any> {
+	): Promise<OrganizationEntity> {
 		try {
 			const { id } = params;
 
@@ -55,7 +58,7 @@ export class OrganizationsController {
 
 	@Get()
 	@UseFilters(new HttpExceptionFilter())
-	async list(): Promise<any> {
+	async list(): Promise<OrganizationEntity[]> {
 		try {
 			return await this.organizationsService.list();
 		} catch (err) {
@@ -70,7 +73,7 @@ export class OrganizationsController {
 
 	@Delete(':id')
 	@UseFilters(new HttpExceptionFilter())
-	async delete(@Param() params): Promise<any> {
+	async delete(@Param() params): Promise<OrganizationEntity> {
 		try {
 			const { id } = params;
 

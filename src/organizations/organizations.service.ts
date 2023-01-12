@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OrganizationDto } from './dto/organization-dto';
+import { OrganizationEntity } from './entities/organization.entity';
 import { OrganizationsRepository } from './organizations.repository';
 
 @Injectable()
@@ -8,23 +9,26 @@ export class OrganizationsService {
 		private readonly organizationsRepository: OrganizationsRepository,
 	) {}
 
-	async create(organizationDto: OrganizationDto): Promise<any> {
+	async create(organizationDto: OrganizationDto): Promise<OrganizationEntity> {
 		return await this.organizationsRepository.create(organizationDto);
 	}
 
-	async update(id: string, organizationDto: OrganizationDto): Promise<any> {
+	async update(
+		id: string,
+		organizationDto: OrganizationDto,
+	): Promise<OrganizationEntity> {
 		return await this.organizationsRepository.update(id, organizationDto);
 	}
 
-	async list(): Promise<any> {
+	async list(): Promise<OrganizationEntity[]> {
 		return await this.organizationsRepository.list();
 	}
 
-	async delete(id: string): Promise<any> {
+	async delete(id: string): Promise<OrganizationEntity> {
 		return await this.organizationsRepository.delete(id);
 	}
 
-	async test(): Promise<any> {
-		return await this.organizationsRepository.test();
+	async test(): Promise<void> {
+		await this.organizationsRepository.test();
 	}
 }

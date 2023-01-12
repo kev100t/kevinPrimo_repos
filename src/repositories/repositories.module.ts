@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { RepositoryVerificationsRepository } from 'src/repository-verifications/repository-verifications.repository';
 import { RepositoryVerificationsService } from 'src/repository-verifications/repository-verifications.service';
-import { MetricsController } from './metrics.controller';
-import { MetricsRepository } from './metrics.repository';
-import { MetricsService } from './metrics.service';
+import { MetricsController } from './repositories.controller';
+import { MetricsRepository } from './repositories.repository';
+import { MetricsService } from './repositories.service';
 
 @Module({
 	imports: [],

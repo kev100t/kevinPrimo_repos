@@ -6,8 +6,9 @@ import {
 	Get,
 	Param,
 } from '@nestjs/common';
-import { MetricsService } from './metrics.service';
+import { MetricsService } from './repositories.service';
 import { HttpExceptionFilter } from '../http-exception.filter';
+import { RepositoryEntity } from './entities/repository.entity';
 
 @Controller('metrics')
 export class MetricsController {
@@ -15,7 +16,7 @@ export class MetricsController {
 
 	@Get(':tribeId')
 	@UseFilters(new HttpExceptionFilter())
-	async list(@Param() params): Promise<any> {
+	async list(@Param() params): Promise<{ repositories: RepositoryEntity[] }> {
 		try {
 			const { tribeId } = params;
 

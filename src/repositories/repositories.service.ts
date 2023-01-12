@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { StatesEnum } from './domain/enums/states.enum';
-import { VerificationsEnum } from './domain/enums/verifications.enum';
-import { MetricsRepository } from './metrics.repository';
+import { StateEnum } from './enums/state.enum';
+import { VerificationEnum } from './enums/verification.enum';
+import { RepositoryEntity } from './entities/repository.entity';
+import { MetricsRepository } from './repositories.repository';
 
 @Injectable()
 export class MetricsService {
 	constructor(private readonly metricsRepository: MetricsRepository) {}
 
-	async list(tribeId: string): Promise<any> {
+	async list(tribeId: string): Promise<{ repositories: RepositoryEntity[] }> {
 		const tribeData = await this.metricsRepository.getTribe(tribeId);
 
 		if (!tribeData) {
@@ -51,18 +52,18 @@ export class MetricsService {
 			repository.bugs = metric.bugs;
 			repository.vulnerabilities = metric.vulnerabilities;
 			repository.hotspot = metric.hotspot;
-			repository.state = StatesEnum[repository.state];
+			repository.state = StateEnum[repository.state];
 			repository.status = '';
 
 			switch (repositoryVerificationCode.state) {
 				case 604:
-					repository.status = VerificationsEnum.VERIFIED;
+					repository.status = VerificationEnum.VERIFIED;
 					break;
 				case 605:
-					repository.status = VerificationsEnum.ON_HOLD;
+					repository.status = VerificationEnum.ON_HOLD;
 					break;
 				case 606:
-					repository.status = VerificationsEnum.APPROVED;
+					repository.status = VerificationEnum.APPROVED;
 					break;
 			}
 

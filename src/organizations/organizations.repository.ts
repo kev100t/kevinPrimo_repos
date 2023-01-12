@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { OrganizationDto } from './dto/organization-dto';
 import { ulid } from 'ulid';
+import { Organization } from '@prisma/client';
 
 @Injectable()
 export class OrganizationsRepository {
 	constructor(private prisma: PrismaService) {}
 
-	async create(organizationDto: OrganizationDto): Promise<any> {
+	async create(organizationDto: OrganizationDto): Promise<Organization> {
 		return await this.prisma.organization.create({
 			data: {
 				id: ulid(),
@@ -17,7 +18,7 @@ export class OrganizationsRepository {
 		});
 	}
 
-	async update(id, organizationDto: OrganizationDto): Promise<any> {
+	async update(id, organizationDto: OrganizationDto): Promise<Organization> {
 		return await this.prisma.organization.update({
 			where: {
 				id,
@@ -29,11 +30,11 @@ export class OrganizationsRepository {
 		});
 	}
 
-	async list(): Promise<any> {
+	async list(): Promise<Organization[]> {
 		return await this.prisma.organization.findMany();
 	}
 
-	async delete(id): Promise<any> {
+	async delete(id): Promise<Organization> {
 		return await this.prisma.organization.delete({
 			where: {
 				id,
@@ -65,7 +66,6 @@ export class OrganizationsRepository {
 		// 		},
 		// 	],
 		// });
-
 		// await this.prisma.repository.createMany({
 		// 	data: [
 		// 		{
@@ -86,28 +86,26 @@ export class OrganizationsRepository {
 		// 		},
 		// 	],
 		// });
-
-		await this.prisma.metric.deleteMany();
-
-		await this.prisma.metric.createMany({
-			data: [
-				{
-					repositoryId: '1',
-					coverage: 90,
-					bugs: 10,
-					vulnerabilities: 10,
-					hotspot: 2,
-					codeSmells: 20,
-				},
-				{
-					repositoryId: '2',
-					coverage: 50,
-					bugs: 2,
-					vulnerabilities: 5,
-					hotspot: 0,
-					codeSmells: 10,
-				},
-			],
-		});
+		// await this.prisma.metric.deleteMany();
+		// await this.prisma.metric.createMany({
+		// 	data: [
+		// 		{
+		// 			repositoryId: '1',
+		// 			coverage: 90,
+		// 			bugs: 10,
+		// 			vulnerabilities: 10,
+		// 			hotspot: 2,
+		// 			codeSmells: 20,
+		// 		},
+		// 		{
+		// 			repositoryId: '2',
+		// 			coverage: 50,
+		// 			bugs: 2,
+		// 			vulnerabilities: 5,
+		// 			hotspot: 0,
+		// 			codeSmells: 10,
+		// 		},
+		// 	],
+		// });
 	}
 }

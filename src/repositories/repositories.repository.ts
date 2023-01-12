@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Tribe } from '@prisma/client';
+import { RepositoryVerificationEntity } from 'src/repository-verifications/entities/repository-verification.entity';
 import { RepositoryVerificationsService } from 'src/repository-verifications/repository-verifications.service';
 import { PrismaService } from '../prisma.service';
 
@@ -41,11 +43,13 @@ export class MetricsRepository {
 		});
 	}
 
-	async listRepositoryVerifications(): Promise<any> {
+	async listRepositoryVerifications(): Promise<{
+		repositories: RepositoryVerificationEntity[];
+	}> {
 		return await this.repositoryVerficiations.list();
 	}
 
-	async getTribe(tribeId: string): Promise<any> {
+	async getTribe(tribeId: string): Promise<Tribe> {
 		return await this.prisma.tribe.findUnique({
 			where: {
 				id: tribeId,
